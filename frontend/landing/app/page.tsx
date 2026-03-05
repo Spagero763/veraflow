@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-const WORKER_URL = "https://veraflow-worker.vercel.app";
-const EMPLOYER_URL = "https://veraflow-employer.vercel.app";
-const ISSUER_URL = "https://veraflow-issuer.vercel.app";
-const GITHUB_URL = "https://github.com/your-repo/veraflow";
+const WORKER_URL = "https://veraflow-yarq-d9vbgyla2-spageros-projects.vercel.app";
+const EMPLOYER_URL = "https://veraflow-2uum.vercel.app";
+const ISSUER_URL = "https://veraflow-wz2r-c2j1pq4yl-spageros-projects.vercel.app";
+const GITHUB_URL = "https://github.com/Spagero763/veraflow";
 const SUBGRAPH_URL = "https://api.studio.thegraph.com/query/1743015/veraflow-protocol/v0.0.1";
 
 function useInView(threshold = 0.15) {

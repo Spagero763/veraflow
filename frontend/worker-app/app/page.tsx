@@ -207,8 +207,8 @@ function Landing({ onConnect, connecting, error }: { onConnect: () => void; conn
       <footer style={{ padding: "20px clamp(20px, 5vw, 48px)", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, position: "relative", zIndex: 2 }}>
         <span style={{ fontSize: 11, color: "var(--muted)", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>VERAFLOW · CHAIN ID 43113</span>
         <div style={{ display: "flex", gap: 24 }}>
-          <a href="http://localhost:3001" style={{ fontSize: 11, color: "var(--muted)", textDecoration: "none", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>EMPLOYER PORTAL</a>
-          <a href="http://localhost:3002" style={{ fontSize: 11, color: "var(--muted)", textDecoration: "none", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>ISSUER DASHBOARD</a>
+          <a href="https://veraflow-2uum.vercel.app" style={{ fontSize: 11, color: "var(--muted)", textDecoration: "none", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>EMPLOYER PORTAL</a>
+          <a href="https://veraflow-wz2r-c2j1pq4yl-spageros-projects.vercel.app" style={{ fontSize: 11, color: "var(--muted)", textDecoration: "none", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>ISSUER DASHBOARD</a>
         </div>
       </footer>
     </div>

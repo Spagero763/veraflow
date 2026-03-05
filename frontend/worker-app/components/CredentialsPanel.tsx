@@ -107,7 +107,7 @@ export default function CredentialsPanel({ address, signer }: { address: string;
               <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 15 }}>Are you an institution?</p>
               <p style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>Apply to issue credentials on the Issuer Dashboard.</p>
             </div>
-            <a href="http://localhost:3002" className="btn-ghost" style={{ textDecoration: "none", fontSize: 12 }}>
+            <a href="https://veraflow-wz2r-c2j1pq4yl-spageros-projects.vercel.app" className="btn-ghost" style={{ textDecoration: "none", fontSize: 12 }}>
               Issuer Dashboard →
             </a>
           </div>
