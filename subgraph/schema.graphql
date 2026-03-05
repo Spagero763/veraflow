@@ -1,0 +1,151 @@
+# =========================================================================
+# INSTITUTIONS
+# =========================================================================
+
+type Institution @entity(immutable: false) {
+  id: ID!                      # institution address
+  name: String!
+  country: String!
+  trustLevel: Int!             # 0=UNVERIFIED 1=PENDING 2=VERIFIED 3=PREMIUM
+  active: Boolean!
+  appliedAt: BigInt!
+  approvedAt: BigInt
+  revokedAt: BigInt
+  totalIssued: BigInt!
+  credentials: [Credential!]! @derivedFrom(field: "institution")
+}
+
+# =========================================================================
+# WORKERS
+# =========================================================================
+
+type Worker @entity(immutable: false) {
+  id: ID!                      # worker address
+  didHash: Bytes!
+  status: Int!                 # 0=UNREGISTERED 1=ACTIVE 2=SUSPENDED 3=DEACTIVATED
+  profileMetaHash: Bytes!
+  reputationScore: Int!
+  credentialCount: Int!
+  registeredAt: BigInt!
+  updatedAt: BigInt!
+  credentials: [Credential!]! @derivedFrom(field: "holder")
+  loans: [Loan!]!              @derivedFrom(field: "borrower")
+  scoreHistory: [ScoreUpdate!]! @derivedFrom(field: "worker")
+}
+
+# =========================================================================
+# CREDENTIALS
+# =========================================================================
+
+type Credential @entity(immutable: false) {
+  id: ID!                      # tokenId
+  tokenId: BigInt!
+  institution: Institution!
+  holder: Worker!
+  credentialType: Int!         # 0=DEGREE 1=CERT 2=LICENSE 3=EMPLOYMENT 4=SKILL 5=IDENTITY
+  burnAuth: Int!               # 0=IssuerOnly 1=OwnerOnly 2=Both 3=Neither
+  issuedAt: BigInt!
+  expiresAt: BigInt!
+  metadataHash: Bytes!
+  revoked: Boolean!
+  revokedAt: BigInt
+  revokeReason: String
+  valid: Boolean!
+}
+
+# =========================================================================
+# REPUTATION
+# =========================================================================
+
+type ScoreUpdate @entity(immutable: false) {
+  id: ID!                      # worker-blockNumber-logIndex
+  worker: Worker!
+  oldScore: Int!
+  newScore: Int!
+  updatedAt: BigInt!
+  txHash: Bytes!
+}
+
+# =========================================================================
+# LOANS
+# =========================================================================
+
+type Loan @entity(immutable: false) {
+  id: ID!                      # loanId
+  loanId: BigInt!
+  borrower: Worker!
+  principal: BigInt!
+  totalRepayable: BigInt!
+  interestRate: Int!
+  tier: Int!
+  status: Int!                 # 0=ACTIVE 1=REPAID 2=DEFAULTED
+  originatedAt: BigInt!
+  dueAt: BigInt!
+  repaidAt: BigInt
+  defaultedAt: BigInt
+  txHash: Bytes!
+}
+
+# =========================================================================
+# GOVERNANCE
+# =========================================================================
+
+type Proposal @entity(immutable: false) {
+  id: ID!                      # proposalId
+  proposalId: BigInt!
+  proposalType: Int!           # 0=APPROVE 1=REVOKE 2=UPDATE_TRUST
+  status: Int!                 # 0=PENDING 1=PASSED 2=EXECUTED 3=REJECTED 4=CANCELLED
+  targetInstitution: Institution!
+  newTrustLevel: Int!
+  proposedBy: Bytes!
+  reason: String!
+  voteCount: Int!
+  requiredQuorum: Int!
+  createdAt: BigInt!
+  expiresAt: BigInt!
+  executedAt: BigInt
+  votes: [Vote!]!              @derivedFrom(field: "proposal")
+}
+
+type Vote @entity(immutable: false) {
+  id: ID!                      # proposalId-voter
+  proposal: Proposal!
+  voter: Bytes!
+  votedAt: BigInt!
+}
+
+# =========================================================================
+# DISPUTES
+# =========================================================================
+
+type Dispute @entity(immutable: false) {
+  id: ID!                      # disputeId
+  disputeId: BigInt!
+  disputeType: Int!            # 0=CREDENTIAL_FRAUD 1=IDENTITY_IMPERSONATION 2=INSTITUTION_MISCONDUCT
+  status: Int!                 # 0=OPEN 1=UPHELD 2=DISMISSED 3=EXPIRED
+  raiser: Bytes!
+  target: Bytes!
+  targetTokenId: BigInt!
+  evidence: String!
+  stake: BigInt!
+  resolution: String
+  raisedAt: BigInt!
+  resolvedAt: BigInt
+}
+
+# =========================================================================
+# PROTOCOL STATS
+# =========================================================================
+
+type ProtocolStats @entity(immutable: false) {
+  id: ID!                      # "global"
+  totalWorkers: BigInt!
+  totalCredentials: BigInt!
+  totalInstitutions: BigInt!
+  totalLoansOriginated: BigInt!
+  totalLoansRepaid: BigInt!
+  totalLoansDefaulted: BigInt!
+  totalVolumeOriginated: BigInt!
+  totalVolumeRepaid: BigInt!
+  updatedAt: BigInt!
+}
