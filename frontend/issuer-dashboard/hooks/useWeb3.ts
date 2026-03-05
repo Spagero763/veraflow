@@ -25,9 +25,9 @@ export function useWeb3(): Web3State {
   const [error, setError] = useState<string | null>(null);
 
   const _setup = useCallback(async (requestAccounts: boolean) => {
-    if (!window.ethereum) return;
+    if (!(window as any).ethereum) return;
     try {
-      const _provider = new ethers.BrowserProvider(window.ethereum as any);
+      const _provider = new ethers.BrowserProvider((window as any).ethereum as any);
       if (requestAccounts) {
         await _provider.send("eth_requestAccounts", []);
       } else {
@@ -60,16 +60,16 @@ export function useWeb3(): Web3State {
   }, []);
 
   const switchToFuji = useCallback(async () => {
-    if (!window.ethereum) return;
+    if (!(window as any).ethereum) return;
     try {
-      await (window.ethereum as any).request({
+      await ((window as any).ethereum as any).request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: `0x${FUJI_CHAIN_ID.toString(16)}` }],
       });
       await _setup(false);
     } catch (e: unknown) {
       if ((e as { code: number }).code === 4902) {
-        await (window.ethereum as any).request({
+        await ((window as any).ethereum as any).request({
           method: "wallet_addEthereumChain",
           params: [{
             chainId: `0x${FUJI_CHAIN_ID.toString(16)}`,
@@ -85,7 +85,7 @@ export function useWeb3(): Web3State {
   }, [_setup]);
 
   useEffect(() => {
-    if (!window.ethereum) return;
+    if (!(window as any).ethereum) return;
     const handleAccountsChanged = (accounts: unknown) => {
       const accs = accounts as string[];
       if (accs.length === 0) disconnect();
@@ -94,11 +94,11 @@ export function useWeb3(): Web3State {
     const handleChainChanged = (chainId: unknown) => {
       setChainId(parseInt(chainId as string, 16));
     };
-    (window.ethereum as any).on("accountsChanged", handleAccountsChanged);
-    (window.ethereum as any).on("chainChanged", handleChainChanged);
+    ((window as any).ethereum as any).on("accountsChanged", handleAccountsChanged);
+    ((window as any).ethereum as any).on("chainChanged", handleChainChanged);
     return () => {
-      (window.ethereum as any).removeListener("accountsChanged", handleAccountsChanged);
-      (window.ethereum as any).removeListener("chainChanged", handleChainChanged);
+      ((window as any).ethereum as any).removeListener("accountsChanged", handleAccountsChanged);
+      ((window as any).ethereum as any).removeListener("chainChanged", handleChainChanged);
     };
   }, [disconnect]);
 
