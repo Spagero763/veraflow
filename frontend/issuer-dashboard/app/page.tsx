@@ -44,7 +44,8 @@ function Header({ address, disconnect, badge }: { address: string; disconnect: (
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ fontSize: 11, color: "var(--muted)", fontFamily: "monospace" }} className="desktop-only">{address.slice(0,6)}···{address.slice(-4)}</span>
-        <button className="btn-ghost" onClick={disconnect} style={{ fontSize: 11, padding: "8px 12px" }}>Exit</button>
+        <a href="/admin" className="btn-ghost" style={{ fontSize: 11, padding: "8px 12px", textDecoration: "none" }}>Admin</a>
+          <button className="btn-ghost" onClick={disconnect} style={{ fontSize: 11, padding: "8px 12px" }}>Exit</button>
       </div>
     </nav>
   );

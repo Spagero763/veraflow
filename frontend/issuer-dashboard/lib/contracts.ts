@@ -31,6 +31,8 @@ export const CREDENTIAL_REGISTRY_ABI = [
   "function isApproved(address institution) external view returns (bool)",
   "function getInstitution(address institution) external view returns (tuple(address wallet, string name, string country, uint8 trustLevel, uint48 registeredAt, uint48 approvedAt, uint256 totalIssued, uint256 dailyIssued, uint48 dailyResetAt, bool active))",
   "function getRemainingDailyLimit(address institution) external view returns (uint256)",
+  "function getPendingInstitutions() external view returns (address[])",
+  "function revokeInstitution(address institution) external",
   "event InstitutionApplied(address indexed institution, string name, string country, uint48 appliedAt)",
   "event CredentialIssued(address indexed institution, address indexed holder, uint256 indexed tokenId, uint8 credentialType)",
 ] as const;
