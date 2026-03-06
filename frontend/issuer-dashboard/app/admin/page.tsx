@@ -270,3 +270,4 @@ function ApprovalCard({ inst, onApprove, onRevoke, txPending }: {
     </div>
   );
 }
+
