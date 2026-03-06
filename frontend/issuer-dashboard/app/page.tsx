@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useIssuer } from "@/hooks/useIssuer";
 import { FUJI_CHAIN_ID, CREDENTIAL_TYPES, BURN_AUTH_TYPES, TRUST_LEVELS } from "@/lib/contracts";
+import RoleBanner from "@/components/RoleBanner";
 
 export default function Home() {
   const web3 = useWeb3();
@@ -31,7 +32,7 @@ export default function Home() {
   if (!institution) return <ApplyForm address={web3.address!} apply={apply} txPending={txPending} error={error} success={success} disconnect={web3.disconnect} />;
   if (!institution.active) return <PendingView institution={institution} address={web3.address!} disconnect={web3.disconnect} />;
 
-  return <IssuerDashboard address={web3.address!} institution={institution} txPending={txPending} error={error} success={success} issueCredential={issueCredential} disconnect={web3.disconnect} />;
+  return <>{web3.provider && <RoleBanner address={web3.address!} provider={web3.provider} />}<IssuerDashboard address={web3.address!} institution={institution} txPending={txPending} error={error} success={success} issueCredential={issueCredential} disconnect={web3.disconnect} /></>;
 }
 
 function Header({ address, disconnect, badge }: { address: string; disconnect: () => void; badge?: string }) {
