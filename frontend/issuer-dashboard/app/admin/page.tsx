@@ -8,7 +8,7 @@ import BgCanvas from "@/components/BgCanvas";
 const DEPLOYER = "0x6DD6F038583a70eFEF80f5B0A34B9a60AC36Be39".toLowerCase();
 
 const REGISTRY_ABI = [
-  "function getInstitution(address) external view returns (tuple(string name, string country, uint8 trustLevel, bool active, uint48 appliedAt, uint48 approvedAt, uint256 totalIssued))",
+  "function getInstitution(address) external view returns (tuple(string name, address wallet, string country, string countryCode, uint8 trustLevel, bool active, uint48 appliedAt, uint48 approvedAt, uint256 totalIssued, uint256 dailyLimit, uint256 issuedToday, uint256 lastIssueDay))",
   "function approveInstitution(address institution, uint8 trustLevel) external",
   "function revokeInstitution(address institution) external",
 ];
@@ -53,7 +53,7 @@ export default function AdminPage() {
         country: inst.country,
         trustLevel: Number(inst.trustLevel),
         active: inst.active,
-        appliedAt: Number(inst.appliedAt),
+        appliedAt: Number(inst.registeredAt),
         totalIssued: Number(inst.totalIssued),
       });
     } catch {
