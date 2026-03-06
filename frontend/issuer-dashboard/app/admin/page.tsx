@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { ethers } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { CONTRACTS, FUJI_CHAIN_ID } from "@/lib/contracts";
@@ -8,11 +8,12 @@ import BgCanvas from "@/components/BgCanvas";
 const DEPLOYER = "0x6DD6F038583a70eFEF80f5B0A34B9a60AC36Be39".toLowerCase();
 
 const REGISTRY_ABI = [
-  "function getPendingInstitutions() external view returns (address[])",
   "function getInstitution(address) external view returns (tuple(string name, string country, uint8 trustLevel, bool active, uint48 appliedAt, uint48 approvedAt, uint256 totalIssued))",
   "function approveInstitution(address institution, uint8 trustLevel) external",
   "function revokeInstitution(address institution) external",
 ];
+
+const TRUST_LABELS = ["Unverified", "Pending", "Verified", "Premium"];
 
 type Institution = {
   address: string;
@@ -24,86 +25,77 @@ type Institution = {
   totalIssued: number;
 };
 
-const TRUST_LABELS = ["Unverified", "Pending", "Verified", "Premium"];
-
 export default function AdminPage() {
   const web3 = useWeb3();
-  const [institutions, setInstitutions] = useState<Institution[]>([]);
+  const [search, setSearch] = useState("");
+  const [institution, setInstitution] = useState<Institution | null>(null);
   const [loading, setLoading] = useState(false);
-  const [txPending, setTxPending] = useState<string | null>(null);
+  const [txPending, setTxPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState(2);
 
   const isDeployer = web3.address?.toLowerCase() === DEPLOYER;
 
-  const fetchPending = useCallback(async () => {
-    if (!web3.signer) return;
+  const lookup = useCallback(async () => {
+    if (!web3.signer || !search.trim()) return;
     setLoading(true);
     setError(null);
+    setInstitution(null);
+    setSuccess(null);
     try {
       const registry = new ethers.Contract(CONTRACTS.CREDENTIAL_REGISTRY, REGISTRY_ABI, web3.signer);
-      const addresses: string[] = await registry.getPendingInstitutions();
-      const details = await Promise.all(
-        addresses.map(async (addr) => {
-          const inst = await registry.getInstitution(addr);
-          return {
-            address: addr,
-            name: inst.name,
-            country: inst.country,
-            trustLevel: Number(inst.trustLevel),
-            active: inst.active,
-            appliedAt: Number(inst.appliedAt),
-            totalIssued: Number(inst.totalIssued),
-          };
-        })
-      );
-      setInstitutions(details);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Failed to load institutions");
+      const inst = await registry.getInstitution(search.trim());
+      if (!inst.name) { setError("No institution found at this address."); return; }
+      setInstitution({
+        address: search.trim(),
+        name: inst.name,
+        country: inst.country,
+        trustLevel: Number(inst.trustLevel),
+        active: inst.active,
+        appliedAt: Number(inst.appliedAt),
+        totalIssued: Number(inst.totalIssued),
+      });
+    } catch {
+      setError("No institution found at this address.");
     } finally {
       setLoading(false);
     }
-  }, [web3.signer]);
+  }, [web3.signer, search]);
 
-  useEffect(() => {
-    if (web3.connected && web3.chainId === FUJI_CHAIN_ID && isDeployer) {
-      fetchPending();
-    }
-  }, [web3.connected, web3.chainId, isDeployer, fetchPending]);
-
-  const approve = async (address: string, trustLevel: number) => {
-    if (!web3.signer) return;
-    setTxPending(address);
+  const approve = async () => {
+    if (!web3.signer || !institution) return;
+    setTxPending(true);
     setError(null);
     setSuccess(null);
     try {
       const registry = new ethers.Contract(CONTRACTS.CREDENTIAL_REGISTRY, REGISTRY_ABI, web3.signer);
-      const tx = await registry.approveInstitution(address, trustLevel);
+      const tx = await registry.approveInstitution(institution.address, selectedLevel);
       await tx.wait();
-      setSuccess(`Approved ${address.slice(0, 10)}···`);
-      await fetchPending();
+      setSuccess(`✓ Approved as ${TRUST_LABELS[selectedLevel]}`);
+      await lookup();
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Approval failed");
     } finally {
-      setTxPending(null);
+      setTxPending(false);
     }
   };
 
-  const revoke = async (address: string) => {
-    if (!web3.signer) return;
-    setTxPending(address);
+  const revoke = async () => {
+    if (!web3.signer || !institution) return;
+    setTxPending(true);
     setError(null);
     setSuccess(null);
     try {
       const registry = new ethers.Contract(CONTRACTS.CREDENTIAL_REGISTRY, REGISTRY_ABI, web3.signer);
-      const tx = await registry.revokeInstitution(address);
+      const tx = await registry.revokeInstitution(institution.address);
       await tx.wait();
-      setSuccess(`Revoked ${address.slice(0, 10)}···`);
-      await fetchPending();
+      setSuccess("✓ Institution revoked");
+      await lookup();
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Revoke failed");
     } finally {
-      setTxPending(null);
+      setTxPending(false);
     }
   };
 
@@ -131,8 +123,8 @@ export default function AdminPage() {
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, position: "relative", zIndex: 2 }}>
       <BgCanvas />
       <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: 32 }}>Access Denied</p>
-      <p style={{ color: "var(--muted)", fontSize: 14 }}>Connected: <code style={{ fontFamily: "monospace" }}>{web3.address}</code></p>
-      <p style={{ color: "var(--muted)", fontSize: 13 }}>This panel requires the deployer wallet.</p>
+      <p style={{ color: "var(--muted)", fontSize: 13 }}>This panel is only accessible to the deployer wallet.</p>
+      <p style={{ fontSize: 11, color: "var(--muted)", fontFamily: "monospace" }}>Connected: {web3.address}</p>
       <button className="btn-ghost" onClick={web3.disconnect}>Disconnect</button>
     </div>
   );
@@ -141,7 +133,6 @@ export default function AdminPage() {
     <div style={{ minHeight: "100vh", display: "grid", gridTemplateRows: "auto 1fr", position: "relative", zIndex: 2 }}>
       <BgCanvas />
 
-      {/* Nav */}
       <nav style={{ padding: "20px clamp(20px,5vw,48px)", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: 18 }}>VeraFlow</span>
@@ -153,121 +144,98 @@ export default function AdminPage() {
         </div>
       </nav>
 
-      <main style={{ padding: "clamp(24px,5vw,48px) clamp(20px,5vw,48px)", maxWidth: 800, width: "100%" }}>
-
-        {/* Header */}
+      <main style={{ padding: "clamp(24px,5vw,48px) clamp(20px,5vw,48px)", maxWidth: 680, width: "100%" }}>
         <div style={{ marginBottom: 40 }}>
           <p className="number-label" style={{ color: "var(--accent)", marginBottom: 16 }}>Governance</p>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-            <h1 style={{ fontSize: "clamp(32px,6vw,48px)", fontWeight: 800, lineHeight: 1 }}>
-              Institution Registry
-            </h1>
-            <button className="btn-ghost" onClick={fetchPending} disabled={loading} style={{ fontSize: 12 }}>
-              {loading ? "Loading···" : "Refresh ↺"}
+          <h1 style={{ fontSize: "clamp(28px,5vw,44px)", fontWeight: 800, marginBottom: 12 }}>Institution Approval</h1>
+          <p style={{ color: "var(--muted)", fontSize: 14, lineHeight: 1.7 }}>
+            Paste an institution's wallet address to look up their application and approve or revoke their status.
+          </p>
+        </div>
+
+        {/* Search */}
+        <div className="card-accent" style={{ marginBottom: 24 }}>
+          <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 14, marginBottom: 16 }}>Look up institution</p>
+          <div style={{ display: "flex", gap: 10 }}>
+            <input
+              className="input"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && lookup()}
+              placeholder="Paste wallet address 0x..."
+              style={{ fontFamily: "monospace", fontSize: 13 }}
+            />
+            <button className="btn-primary" onClick={lookup} disabled={loading || !search.trim()} style={{ flexShrink: 0, fontSize: 12 }}>
+              {loading ? "···" : "Look up →"}
             </button>
           </div>
-          <p style={{ color: "var(--muted)", fontSize: 14, marginTop: 12, lineHeight: 1.7 }}>
-            Approve or revoke institutions. Approved institutions can issue soulbound credentials to workers.
-          </p>
         </div>
 
         {error && <p className="alert alert-error" style={{ marginBottom: 24 }}>{error}</p>}
         {success && <p className="alert alert-success" style={{ marginBottom: 24 }}>{success}</p>}
 
-        {loading && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            {[1,2,3].map(i => <div key={i} style={{ height: 100, background: "var(--surface)", opacity: 0.4 + i * 0.1 }} />)}
-          </div>
-        )}
-
-        {!loading && institutions.length === 0 && (
-          <div className="card" style={{ textAlign: "center", padding: "60px 24px" }}>
-            <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 8 }}>No pending applications</p>
-            <p style={{ color: "var(--muted)", fontSize: 14 }}>New applications will appear here when institutions apply via the Issuer Dashboard.</p>
-          </div>
-        )}
-
-        {!loading && institutions.length > 0 && (
+        {institution && (
           <div style={{ display: "flex", flexDirection: "column", gap: 1, background: "var(--border)" }}>
-            {institutions.map((inst) => (
-              <ApprovalCard
-                key={inst.address}
-                inst={inst}
-                onApprove={approve}
-                onRevoke={revoke}
-                txPending={txPending === inst.address}
-              />
-            ))}
+            {/* Institution details */}
+            <div className="card" style={{ borderRadius: 0 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 20 }}>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                    <span className={`tag ${institution.active ? "tag-green" : "tag-amber"}`}>
+                      {institution.active ? "Active" : "Pending"}
+                    </span>
+                    <span className="number-label">{institution.country}</span>
+                    <span className="number-label" style={{ color: "var(--muted)" }}>Trust: {TRUST_LABELS[institution.trustLevel]}</span>
+                  </div>
+                  <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "clamp(20px,3vw,26px)" }}>{institution.name}</p>
+                  <p style={{ fontSize: 11, color: "var(--muted)", fontFamily: "monospace", marginTop: 6, wordBreak: "break-all" }}>{institution.address}</p>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, background: "var(--border)", marginBottom: 20 }}>
+                {[
+                  { label: "Applied", value: new Date(institution.appliedAt * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) },
+                  { label: "Credentials Issued", value: institution.totalIssued.toString() },
+                ].map(s => (
+                  <div key={s.label} style={{ background: "var(--surface)", padding: "16px 20px" }}>
+                    <p style={{ fontSize: 11, color: "var(--muted)", marginBottom: 4 }}>{s.label}</p>
+                    <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 18 }}>{s.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Actions */}
+              {!institution.active ? (
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+                  <select
+                    className="select"
+                    value={selectedLevel}
+                    onChange={e => setSelectedLevel(Number(e.target.value))}
+                    style={{ width: "auto", fontSize: 13 }}
+                  >
+                    <option value={2}>Verified</option>
+                    <option value={3}>Premium</option>
+                  </select>
+                  <button className="btn-primary" onClick={approve} disabled={txPending} style={{ fontSize: 13 }}>
+                    {txPending ? "Approving···" : `Approve as ${TRUST_LABELS[selectedLevel]} →`}
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <p style={{ fontSize: 13, color: "var(--muted)", flex: 1 }}>This institution is active and can issue credentials.</p>
+                  <button
+                    onClick={revoke}
+                    disabled={txPending}
+                    style={{ background: "none", border: "1px solid var(--danger)", color: "var(--danger)", borderRadius: 2, padding: "10px 20px", fontSize: 12, cursor: "pointer", fontFamily: "Syne, sans-serif", fontWeight: 700 }}
+                  >
+                    {txPending ? "Revoking···" : "Revoke"}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </main>
     </div>
   );
 }
-
-function ApprovalCard({ inst, onApprove, onRevoke, txPending }: {
-  inst: Institution;
-  onApprove: (addr: string, level: number) => void;
-  onRevoke: (addr: string) => void;
-  txPending: boolean;
-}) {
-  const [selectedLevel, setSelectedLevel] = useState(2);
-
-  return (
-    <div className="card" style={{ borderRadius: 0 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16 }}>
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-            <span className={`tag ${inst.active ? "tag-green" : "tag-amber"}`}>
-              {inst.active ? "Active" : "Pending"}
-            </span>
-            <span className="number-label">{inst.country}</span>
-          </div>
-          <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "clamp(18px,3vw,22px)" }}>{inst.name}</p>
-          <p style={{ fontSize: 11, color: "var(--muted)", fontFamily: "monospace", marginTop: 6 }}>{inst.address}</p>
-          <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>
-            Applied {new Date(inst.appliedAt * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
-            {inst.totalIssued > 0 && ` · ${inst.totalIssued} credentials issued`}
-          </p>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-end" }}>
-          {!inst.active ? (
-            <>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 12, color: "var(--muted)" }}>Trust level:</span>
-                <select
-                  className="select"
-                  value={selectedLevel}
-                  onChange={e => setSelectedLevel(Number(e.target.value))}
-                  style={{ padding: "6px 12px", fontSize: 12, width: "auto" }}
-                >
-                  <option value={2}>Verified</option>
-                  <option value={3}>Premium</option>
-                </select>
-              </div>
-              <button
-                className="btn-primary"
-                onClick={() => onApprove(inst.address, selectedLevel)}
-                disabled={txPending}
-                style={{ fontSize: 12, padding: "10px 20px" }}
-              >
-                {txPending ? "Approving···" : `Approve as ${TRUST_LABELS[selectedLevel]} →`}
-              </button>
-            </>
-          ) : (
-            <button
-              className="btn-ghost"
-              onClick={() => onRevoke(inst.address)}
-              disabled={txPending}
-              style={{ fontSize: 12, padding: "10px 20px", borderColor: "var(--danger)", color: "var(--danger)" }}
-            >
-              {txPending ? "Revoking···" : "Revoke"}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
