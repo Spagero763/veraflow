@@ -1,4 +1,3 @@
-cat > ~/veraflow/README.md << 'EOF'
 # VeraFlow
 
 On-chain professional identity and reputation-based credit for workers who've been locked out of the financial system.
