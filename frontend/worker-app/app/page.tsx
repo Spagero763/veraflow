@@ -4,6 +4,7 @@ import { useWeb3 } from "@/hooks/useWeb3";
 import { useWorkerIdentity } from "@/hooks/useWorkerIdentity";
 import { FUJI_CHAIN_ID } from "@/lib/contracts";
 import Dashboard from "@/components/Dashboard";
+import RoleBanner from "@/components/RoleBanner";
 import WalletModal from "@/components/WalletModal";
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
     </div>
   );
 
-  return <Dashboard address={web3.address!} identity={identity} loading={loading} txPending={txPending} register={register} refreshScore={refreshScore} signer={web3.signer} disconnect={web3.disconnect} />;
+  return <>{web3.provider && <RoleBanner address={web3.address!} provider={web3.provider} />}<Dashboard address={web3.address!} identity={identity} loading={loading} txPending={txPending} register={register} refreshScore={refreshScore} signer={web3.signer} disconnect={web3.disconnect} /></>;
 }
 
 function Landing({ onConnect, connecting, error }: { onConnect: () => void; connecting: boolean; error: string | null }) {
