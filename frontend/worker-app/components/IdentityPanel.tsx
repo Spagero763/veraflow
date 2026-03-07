@@ -87,14 +87,14 @@ export default function IdentityPanel({ address, identity, loading, txPending, r
             <span style={{
               fontSize: "clamp(72px, 12vw, 112px)",
               fontWeight: 700,
-              fontFamily: "Clash Display, sans-serif",
+              fontFamily: "Syne, sans-serif",
               lineHeight: 1,
               letterSpacing: "-0.05em",
               color: "var(--accent)",
             }}>
               <CountUp target={identity.reputationScore} />
             </span>
-            <span style={{ fontSize: 20, color: "var(--muted)", fontWeight: 400, fontFamily: "Cabinet Grotesk, sans-serif" }}>/1000</span>
+            <span style={{ fontSize: 20, color: "var(--muted)", fontWeight: 400, fontFamily: "DM Sans, sans-serif" }}>/1000</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
             <span className={`tag ${identity.status === 1 ? "tag-green" : "tag-dim"}`}>
@@ -103,7 +103,7 @@ export default function IdentityPanel({ address, identity, loading, txPending, r
             <span style={{ fontSize: 12, color: "var(--muted)" }}>{currentTier.label} available</span>
           </div>
         </div>
-        <p style={{ fontSize: 12, color: "var(--muted)", letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "Clash Display, sans-serif" }}>Reputation Score</p>
+        <p style={{ fontSize: 12, color: "var(--muted)", letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "Syne, sans-serif" }}>Reputation Score</p>
       </div>
 
       {/* Score bar with tiers */}
@@ -127,7 +127,7 @@ export default function IdentityPanel({ address, identity, loading, txPending, r
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {[{ s: 250, l: "$100" }, { s: 500, l: "$500" }, { s: 750, l: "$2k" }].map(t => (
             <div key={t.s} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
-              <span style={{ fontSize: 11, fontFamily: "Clash Display, sans-serif", fontWeight: 600, color: identity.reputationScore >= t.s ? "var(--accent)" : "var(--muted)" }}>{t.s}+</span>
+              <span style={{ fontSize: 11, fontFamily: "Syne, sans-serif", fontWeight: 600, color: identity.reputationScore >= t.s ? "var(--accent)" : "var(--muted)" }}>{t.s}+</span>
               <span style={{ fontSize: 9, color: "var(--muted)", letterSpacing: "0.08em", textTransform: "uppercase" }}>{t.l}</span>
             </div>
           ))}

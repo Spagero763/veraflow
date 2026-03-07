@@ -52,7 +52,7 @@ export default function WalletModal({ onSelect, onClose }: { onSelect: (id: stri
         <div style={{ padding: "16px 28px 24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
             <div>
-              <p style={{ fontFamily: "Clash Display, sans-serif", fontWeight: 700, fontSize: 22, letterSpacing: "-0.03em" }}>Connect Wallet</p>
+              <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 22, letterSpacing: "-0.03em" }}>Connect Wallet</p>
               <p style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>Choose your wallet to continue</p>
             </div>
             <button
@@ -82,13 +82,13 @@ export default function WalletModal({ onSelect, onClose }: { onSelect: (id: stri
                   background: `${w.color}15`,
                   border: `1px solid ${w.color}30`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontFamily: "Clash Display, sans-serif", fontWeight: 700,
+                  fontFamily: "Syne, sans-serif", fontWeight: 700,
                   fontSize: 16, color: w.color, flexShrink: 0,
                 }}>
                   {w.letter}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontFamily: "Clash Display, sans-serif", fontWeight: 600, fontSize: 15, color: "var(--text)" }}>{w.name}</p>
+                  <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: 15, color: "var(--text)" }}>{w.name}</p>
                   <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>{w.desc}</p>
                 </div>
                 <span style={{ color: "var(--muted)", fontSize: 16 }}>→</span>

@@ -41,16 +41,16 @@ export default function Dashboard({ address, identity, loading, txPending, regis
         zIndex: 10,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontFamily: "Clash Display, sans-serif", fontWeight: 700, fontSize: 17, letterSpacing: "-0.02em" }}>VeraFlow</span>
+          <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 17, letterSpacing: "-0.02em" }}>VeraFlow</span>
           <span style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--accent)" }} />
-          <span style={{ fontSize: 11, color: "var(--muted)", fontFamily: "Clash Display, sans-serif", letterSpacing: "0.1em", textTransform: "uppercase" }}>Worker</span>
+          <span style={{ fontSize: 11, color: "var(--muted)", fontFamily: "Syne, sans-serif", letterSpacing: "0.1em", textTransform: "uppercase" }}>Worker</span>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           {identity && (
             <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 14px", border: "1px solid rgba(200,240,96,0.2)", borderRadius: 100, background: "rgba(200,240,96,0.05)" }}>
               <span className="live-dot" />
-              <span style={{ fontSize: 12, color: "var(--accent)", fontFamily: "Clash Display, sans-serif", fontWeight: 600, letterSpacing: "0.04em" }}>
+              <span style={{ fontSize: 12, color: "var(--accent)", fontFamily: "Syne, sans-serif", fontWeight: 600, letterSpacing: "0.04em" }}>
                 {identity.reputationScore} pts
               </span>
             </div>
@@ -77,7 +77,7 @@ export default function Dashboard({ address, identity, loading, txPending, regis
               background: "none", border: "none", cursor: "none",
               padding: "18px 24px 16px",
               fontSize: 11,
-              fontFamily: "Clash Display, sans-serif",
+              fontFamily: "Syne, sans-serif",
               fontWeight: 600,
               letterSpacing: "0.1em",
               textTransform: "uppercase",

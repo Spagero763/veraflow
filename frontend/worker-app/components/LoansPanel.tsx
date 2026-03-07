@@ -80,7 +80,7 @@ export default function LoansPanel({ address, signer, identity }: {
               { n: "04", text: "Reach 250+ to unlock your first credit line." },
             ].map(s => (
               <div key={s.n} style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
-                <span style={{ fontFamily: "Clash Display, sans-serif", fontWeight: 700, fontSize: 11, color: "var(--accent)", flexShrink: 0, letterSpacing: "0.1em" }}>{s.n}</span>
+                <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 11, color: "var(--accent)", flexShrink: 0, letterSpacing: "0.1em" }}>{s.n}</span>
                 <p style={{ fontSize: 14, color: "var(--muted)", lineHeight: 1.7 }}>{s.text}</p>
               </div>
             ))}
@@ -92,7 +92,7 @@ export default function LoansPanel({ address, signer, identity }: {
       {eligible && !hasActive && (
         <div className="card-accent animate-fade-up animate-fade-up-2" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div>
-            <p style={{ fontFamily: "Clash Display, sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "-0.02em", marginBottom: 6 }}>Borrow USDC</p>
+            <p style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "-0.02em", marginBottom: 6 }}>Borrow USDC</p>
             <p style={{ fontSize: 13, color: "var(--muted)" }}>No collateral required. Repay before the due date.</p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -105,13 +105,13 @@ export default function LoansPanel({ address, signer, identity }: {
                 placeholder={`0.00`}
                 style={{ paddingRight: 80 }}
               />
-              <span style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--muted)", fontFamily: "Clash Display, sans-serif", fontWeight: 600 }}>USDC</span>
+              <span style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--muted)", fontFamily: "Syne, sans-serif", fontWeight: 600 }}>USDC</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontSize: 12, color: "var(--muted)" }}>Max: ${USDC(assessment!.creditLimit)}</span>
               <button
                 onClick={() => setAmount(USDC(assessment!.creditLimit))}
-                style={{ fontSize: 11, color: "var(--accent)", background: "none", border: "none", cursor: "none", fontFamily: "Clash Display, sans-serif", fontWeight: 600, letterSpacing: "0.06em" }}
+                style={{ fontSize: 11, color: "var(--accent)", background: "none", border: "none", cursor: "none", fontFamily: "Syne, sans-serif", fontWeight: 600, letterSpacing: "0.06em" }}
               >
                 MAX
               </button>
@@ -144,7 +144,7 @@ export default function LoansPanel({ address, signer, identity }: {
                         {loan.statusLabel}
                       </span>
                     </div>
-                    <p style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 700, fontFamily: "Clash Display, sans-serif", letterSpacing: "-0.03em" }}>
+                    <p style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 700, fontFamily: "Syne, sans-serif", letterSpacing: "-0.03em" }}>
                       ${USDC(loan.principal)}
                     </p>
                     <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 6 }}>

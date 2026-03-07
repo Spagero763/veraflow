@@ -22,9 +22,6 @@ html, body {
   overflow-x: hidden;
 }
 
-
-html, body { width: 100%; min-height: 100vh; }
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -46,7 +43,6 @@ h1, h2, h3, h4 {
 ::-webkit-scrollbar-thumb { background: var(--border); }
 ::selection { background: var(--accent); color: var(--bg); }
 
-/* ── Background canvas ── */
 #bg-canvas {
   position: fixed;
   inset: 0;
@@ -54,7 +50,6 @@ h1, h2, h3, h4 {
   pointer-events: none;
 }
 
-/* Noise overlay */
 body::before {
   content: "";
   position: fixed;
@@ -67,7 +62,6 @@ body::before {
   opacity: 0.5;
 }
 
-/* Accent glow top */
 body::after {
   content: "";
   position: fixed;
@@ -81,13 +75,11 @@ body::after {
   pointer-events: none;
 }
 
-/* All content above canvas */
 header, main, nav, footer, .modal-overlay {
   position: relative;
   z-index: 2;
 }
 
-/* ── Animations ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -125,7 +117,6 @@ header, main, nav, footer, .modal-overlay {
 .animate-fade-up-5 { animation-delay: 0.40s; }
 .animate-fade-in   { animation: fadeIn 0.4s ease both; }
 
-/* ── Components ── */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -292,7 +283,6 @@ header, main, nav, footer, .modal-overlay {
 .alert-success { background: rgba(200,240,96,0.05); border-color: var(--accent); color: rgba(200,240,96,0.8); }
 .alert-error   { background: rgba(255,77,77,0.05);  border-color: var(--danger); color: rgba(255,77,77,0.8); }
 
-/* Stat grid */
 .stat-grid {
   display: grid;
   gap: 1px;
@@ -318,7 +308,6 @@ header, main, nav, footer, .modal-overlay {
   margin-top: 6px;
 }
 
-/* Live dot */
 .live-dot {
   width: 6px;
   height: 6px;
@@ -328,21 +317,14 @@ header, main, nav, footer, .modal-overlay {
   display: inline-block;
 }
 
-/* ── Responsive ── */
 @media (max-width: 640px) {
   .desktop-only { display: none !important; }
-
   .stat-grid { grid-template-columns: 1fr 1fr !important; }
-  .stat-grid .stat-cell:last-child {
-    grid-column: 1 / -1;
-  }
-
+  .stat-grid .stat-cell:last-child { grid-column: 1 / -1; }
   .card { padding: 20px 16px; }
   .card-accent { padding: 20px 16px; }
-
   .btn-primary { padding: 14px 24px; font-size: 12px; width: 100%; justify-content: center; }
   .btn-ghost   { padding: 12px 16px; font-size: 11px; }
-
   .score-bar { height: 3px; }
 }
 
