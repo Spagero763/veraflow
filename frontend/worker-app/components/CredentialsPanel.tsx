@@ -14,7 +14,7 @@ type Credential = {
 };
 
 const EMPLOYER_URL = "https://veraflow-2uum.vercel.app";
-const ISSUER_URL = "https://veraflow-wz2r-c2j1pq4yl-spageros-projects.vercel.app";
+const ISSUER_URL = "https://veraflow-wz2r.vercel.app";
 
 export default function CredentialsPanel({ address, signer }: { address: string; signer: ethers.JsonRpcSigner | null }) {
   const [credentials, setCredentials] = useState<Credential[]>([]);

@@ -9,8 +9,8 @@ const IDENTITY_ABI = ["function isActive(address wallet) external view returns (
 const REGISTRY_ABI = ["function isApproved(address wallet) external view returns (bool)"];
 
 const URLS = {
-  worker: "https://veraflow-yarq-d9vbgyla2-spageros-projects.vercel.app",
-  issuer: "https://veraflow-wz2r-c2j1pq4yl-spageros-projects.vercel.app",
+  worker: "https://veraflow-yarq.vercel.app",
+  issuer: "https://veraflow-wz2r.vercel.app",
   employer: "https://veraflow-2uum.vercel.app",
 };
 

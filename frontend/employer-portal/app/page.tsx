@@ -26,7 +26,7 @@ function VerifyPage() {
           <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "clamp(15px, 3vw, 18px)", letterSpacing: "-0.03em" }}>VeraFlow</span>
           <span style={{ fontSize: 10, color: "var(--muted)", fontFamily: "Syne, sans-serif", letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 8px", border: "1px solid var(--border)", borderRadius: 2 }}>Employer</span>
         </div>
-        <a href="https://veraflow-yarq-d9vbgyla2-spageros-projects.vercel.app" style={{ fontSize: 11, color: "var(--muted)", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em", textTransform: "uppercase", textDecoration: "none" }}>
+        <a href="https://veraflow-yarq.vercel.app" style={{ fontSize: 11, color: "var(--muted)", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em", textTransform: "uppercase", textDecoration: "none" }}>
           Worker Portal
         </a>
       </nav>

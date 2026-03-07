@@ -209,7 +209,7 @@ function Landing({ onConnect, connecting, error }: { onConnect: () => void; conn
         <span style={{ fontSize: 11, color: "var(--muted)", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>VERAFLOW · CHAIN ID 43113</span>
         <div style={{ display: "flex", gap: 24 }}>
           <a href="https://veraflow-2uum.vercel.app" style={{ fontSize: 11, color: "var(--muted)", textDecoration: "none", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>EMPLOYER PORTAL</a>
-          <a href="https://veraflow-wz2r-c2j1pq4yl-spageros-projects.vercel.app" style={{ fontSize: 11, color: "var(--muted)", textDecoration: "none", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>ISSUER DASHBOARD</a>
+          <a href="https://veraflow-wz2r.vercel.app" style={{ fontSize: 11, color: "var(--muted)", textDecoration: "none", fontFamily: "Syne, sans-serif", letterSpacing: "0.06em" }}>ISSUER DASHBOARD</a>
         </div>
       </footer>
     </div>

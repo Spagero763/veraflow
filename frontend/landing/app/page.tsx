@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-const WORKER_URL = "https://veraflow-yarq-d9vbgyla2-spageros-projects.vercel.app";
+const WORKER_URL = "https://veraflow-yarq.vercel.app";
 const EMPLOYER_URL = "https://veraflow-2uum.vercel.app";
-const ISSUER_URL = "https://veraflow-wz2r-c2j1pq4yl-spageros-projects.vercel.app";
+const ISSUER_URL = "https://veraflow-wz2r.vercel.app";
 const GITHUB_URL = "https://github.com/Spagero763/veraflow";
 const SUBGRAPH_URL = "https://api.studio.thegraph.com/query/1743015/veraflow-protocol/v0.0.1";
 

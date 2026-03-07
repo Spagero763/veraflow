@@ -6,7 +6,7 @@ const WORKER_IDENTITY = "0x7C937A7E3C1c7C6D1776f69650Bfd1516103F766";
 const IDENTITY_ABI = ["function isActive(address wallet) external view returns (bool)"];
 
 const URLS = {
-  worker: "https://veraflow-yarq-d9vbgyla2-spageros-projects.vercel.app",
+  worker: "https://veraflow-yarq.vercel.app",
   employer: "https://veraflow-2uum.vercel.app",
 };
 
