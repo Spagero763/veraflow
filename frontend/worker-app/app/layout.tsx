@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import BgCanvas from "@/components/BgCanvas";
+
 export const metadata: Metadata = {
   title: "VeraFlow — Worker Portal",
   description: "On-chain professional identity and credit for skilled workers",
 };
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
