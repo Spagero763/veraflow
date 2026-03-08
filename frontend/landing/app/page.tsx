@@ -62,7 +62,7 @@ export default function Landing() {
       </nav>
 
       {/* HERO */}
-      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", padding: "100px clamp(16px,4vw,48px) 64px" }}>
+      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", padding: "100px clamp(16px,4vw,48px) 64px", maxWidth: 1000, margin: "0 auto", width: "100%" }}>
         <FadeUp style={{ marginBottom: 20 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 12px", border: "1px solid rgba(200,240,96,0.3)", borderRadius: 2, background: "rgba(200,240,96,0.05)" }}>
             <span className="live-dot" />
@@ -71,7 +71,7 @@ export default function Landing() {
         </FadeUp>
 
         <FadeUp delay={0.08}>
-          <h1 style={{ fontSize: "clamp(40px,8vw,96px)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.03em", marginBottom: 32, maxWidth: 900 }}>
+          <h1 style={{ fontSize: "clamp(36px,6vw,80px)", fontWeight: 800, lineHeight: 1.0, letterSpacing: "-0.03em", marginBottom: 32, maxWidth: 900 }}>
             Work is proof.<br />
             Proof is<br />
             <span style={{ color: "var(--accent)" }}>credit.</span>
