@@ -349,3 +349,31 @@ header, main, nav, footer, .modal-overlay {
 @media (min-width: 641px) {
   .mobile-only { display: none !important; }
 }
+
+/* ── Mobile & Tablet Responsive ── */
+@media (max-width: 480px) {
+  h1, h2, h3 { letter-spacing: -0.02em; }
+  .btn-primary { width: 100%; justify-content: center; }
+  .stat-grid { grid-template-columns: 1fr 1fr !important; }
+  nav { padding: 0 16px !important; }
+  main { padding: 24px 16px !important; }
+}
+
+@media (max-width: 768px) {
+  .desktop-only { display: none !important; }
+  .card { padding: 18px 14px; }
+  .card-accent { padding: 18px 14px; }
+  .btn-primary { padding: 13px 20px; font-size: 12px; }
+  .btn-ghost { padding: 10px 14px; font-size: 11px; }
+  .stat-value { font-size: clamp(18px, 5vw, 24px) !important; }
+}
+
+@media (min-width: 769px) {
+  .mobile-only { display: none !important; }
+}
+
+/* Prevent horizontal overflow on all screen sizes */
+* { max-width: 100%; }
+img, video, canvas { max-width: 100%; height: auto; }
+table { width: 100%; overflow-x: auto; display: block; }
+pre, code { overflow-x: auto; }
