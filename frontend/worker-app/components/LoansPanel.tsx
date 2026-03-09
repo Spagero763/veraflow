@@ -15,7 +15,7 @@ export default function LoansPanel({ address, signer, identity }: { address: str
 
   const handleBorrow = async () => { if (!amount) return; await borrow(ethers.parseUnits(amount, 6)); setAmount(""); };
   const eligible = assessment?.eligible && assessment.creditLimit > 0n;
-  const hasActive = loans.some(l => l.status === 0);
+  const hasActive = loans.some(l => l.status === 1);
 
   if (loading) return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -78,14 +78,14 @@ export default function LoansPanel({ address, signer, identity }: { address: str
                 <div>
                   <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 10 }}>
                     <span className="number-label">#{loan.loanId.toString().padStart(3, "0")}</span>
-                    <span className={`tag ${loan.status === 0 ? "tag-amber" : loan.status === 1 ? "tag-green" : "tag-red"}`}>{loan.statusLabel}</span>
+                    <span className={`tag ${loan.status === 1 ? "tag-amber" : loan.status === 1 ? "tag-green" : "tag-red"}`}>{loan.statusLabel}</span>
                   </div>
                   <p style={{ fontSize: "clamp(20px, 4vw, 26px)", fontWeight: 700, fontFamily: "Syne, sans-serif" }}>${USDC(loan.principal)}</p>
                   <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>
                     Repayable: ${USDC(loan.totalRepayable)} · Due {new Date(loan.dueAt * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
                   </p>
                 </div>
-                {loan.status === 0 && (
+                {loan.status === 1 && (
                   <button className="btn-primary" onClick={async () => { setRepayingId(loan.loanId); await repay(loan.loanId, loan.totalRepayable); setRepayingId(null); }} disabled={txPending && repayingId === loan.loanId} style={{ fontSize: 12 }}>
                     {txPending && repayingId === loan.loanId ? "Repaying..." : `Repay $${USDC(loan.totalRepayable)}`}
                   </button>

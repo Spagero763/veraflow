@@ -79,4 +79,4 @@ export const CREDENTIAL_TYPES = [
   "Identity",
 ] as const;
 
-export const LOAN_STATUS = ["Active", "Repaid", "Defaulted"] as const;
+export const LOAN_STATUS = ["None", "Active", "Repaid", "Defaulted", "Liquidated"] as const;
