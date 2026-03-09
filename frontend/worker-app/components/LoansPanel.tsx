@@ -50,7 +50,7 @@ export default function LoansPanel({ address, signer, identity }: { address: str
       {assessment && !eligible && (
         <div className="card animate-fade-up animate-fade-up-2" style={{ borderLeft: "2px solid var(--border)" }}>
           <p style={{ fontSize: 13, color: "var(--muted)", lineHeight: 1.7 }}>
-            Score of 250+ required to borrow. Register your identity and earn credentials from verified institutions to qualify.
+            Score of 50+ required to borrow. Register your identity and earn credentials from verified institutions to qualify.
           </p>
         </div>
       )}
