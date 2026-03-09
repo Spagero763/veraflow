@@ -15,12 +15,13 @@ export type Loan = {
   borrower: string;
   principal: bigint;
   totalRepayable: bigint;
+  amountRepaid: bigint;
   interestRate: bigint;
-  tier: number;
   status: number;
   statusLabel: string;
   originatedAt: number;
   dueAt: number;
+  lastRepaidAt: number;
 };
 
 export type CreditAssessment = {
@@ -66,12 +67,13 @@ export function useLoans(signer: ethers.JsonRpcSigner | null, address: string | 
               borrower: loan.borrower,
               principal: loan.principal,
               totalRepayable: loan.totalRepayable,
+              amountRepaid: loan.amountRepaid,
               interestRate: loan.interestRate,
-              tier: Number(loan.tier),
               status: Number(loan.status),
               statusLabel: LOAN_STATUS[Number(loan.status)] ?? "Unknown",
               originatedAt: Number(loan.originatedAt),
               dueAt: Number(loan.dueAt),
+              lastRepaidAt: Number(loan.lastRepaidAt),
             });
           }
         } catch {

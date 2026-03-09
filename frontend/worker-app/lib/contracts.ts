@@ -51,7 +51,7 @@ export const REPUTATION_SCORE_ABI = [
 export const LENDING_POOL_ABI = [
   "function borrow(uint256 amount) external returns (uint256 loanId)",
   "function repay(uint256 loanId, uint256 amount) external",
-  "function getLoan(uint256 loanId) external view returns (tuple(uint256 loanId, address borrower, uint256 principal, uint256 totalRepayable, uint256 interestRate, uint8 tier, uint8 status, uint48 originatedAt, uint48 dueAt))",
+  "function getLoan(uint256 loanId) external view returns (tuple(uint256 loanId, address borrower, uint256 principal, uint256 totalRepayable, uint256 amountRepaid, uint256 interestRate, uint48 originatedAt, uint48 dueAt, uint48 lastRepaidAt, uint8 status, uint32 reputationScoreAtOrigination))",
   "function availableLiquidity() external view returns (uint256)",
   "function getTierForScore(uint32 score) external view returns (tuple(uint32 minScore, uint32 maxScore, uint256 maxLoanAmount, uint256 interestRate, uint48 duration))",
 ] as const;
