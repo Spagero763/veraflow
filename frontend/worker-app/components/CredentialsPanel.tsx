@@ -28,7 +28,7 @@ export default function CredentialsPanel({ address, signer }: { address: string;
   useEffect(() => { fetch(); }, [fetch]);
 
   const copyShareLink = () => {
-    const url = `${window.location.origin.replace("3000", "3001")}?address=${address}`;
+    const url = `https://veraflow-2uum.vercel.app?address=${address}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
