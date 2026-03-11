@@ -111,11 +111,11 @@ Loan tiers:
 ```
 Tier    Score Range    Max Loan    APR    Duration
 ──────  ───────────    ────────    ───    ────────
-0       250 – 499      500 USDC    12%    90 days
-1       500 – 749      2000 USDC   9%     180 days
-2       750 – 1000     5000 USDC   6%     365 days
+0       50 – 499      5 USDC    12%    90 days
+1       500 – 749      5 USDC   9%     180 days
+2       750 – 1000     5 USDC   6%     365 days
 ```
-
+(the above price for now)
 ---
 
 ## Design Decisions
