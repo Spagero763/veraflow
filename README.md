@@ -37,10 +37,10 @@ Workers start at 0. Every valid credential from a verified institution adds 100 
 
 | Score | Credit limit |
 |---|---|
-| 250–499 | $100 USDC |
-| 500–749 | $500 USDC |
-| 750–1000 | $2,000 USDC |
-
+| 250–499 | $5 USDC |
+| 500–749 | $5 USDC |
+| 750–1000 | $5 USDC |
+(the above price for now)
 ---
 
 ## Contracts (Avalanche Fuji)
