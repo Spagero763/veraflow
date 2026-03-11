@@ -40,7 +40,7 @@ Workers start at 0. Every valid credential from a verified institution adds 100 
 | 250–499 | $5 USDC |
 | 500–749 | $5 USDC |
 | 750–1000 | $5 USDC |
-(the above price for now)
+(the above price for now because of whats in the lending pool)
 ---
 
 ## Contracts (Avalanche Fuji)
