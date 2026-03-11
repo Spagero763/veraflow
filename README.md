@@ -159,5 +159,3 @@ The deployer wallet (`0x6DD6F038583a70eFEF80f5B0A34B9a60AC36Be39`) is pre-approv
 Connect the deployer wallet on the Issuer Dashboard and use the Issue Credential form to issue to any worker wallet address.
 
 ---
-
-*Built by Emmanuel · Build Games 2026 · Avalanche Fuji*
