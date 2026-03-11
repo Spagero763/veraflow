@@ -1,10 +1,10 @@
-# VeraFlow
+# VeraFlow — Smart Contracts
 
 On-chain professional identity and credit layer for skilled workers.
 
 Workers get tamper-proof credentials as soulbound tokens. Those credentials feed a deterministic reputation score. That score unlocks micro-loans — no bank account, no collateral, no KYC middleman.
 
-Built on Avalanche for the Build Games hackathon.
+Built on Avalanche Fuji for Build Games 2026.
 
 ---
 
@@ -19,7 +19,6 @@ Credential fraud costs $600B/year. Financial exclusion costs workers even more.
 ---
 
 ## What VeraFlow Does
-
 ```
 Institution                Worker                    Employer / DeFi Protocol
 ──────────                 ──────                    ────────────────────────
@@ -41,7 +40,6 @@ Three things happen on-chain:
 ---
 
 ## Architecture
-
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        Avalanche Fuji                           │
@@ -70,27 +68,29 @@ Three things happen on-chain:
 
 ---
 
-## Contract Overview
+## Contract Addresses (Avalanche Fuji · Chain ID 43113)
 
-| Contract | Address (Fuji) | Purpose |
-|---|---|---|
-| SoulboundCredential | `0xdc7041742002F70ec635015b2e10FE52dD406A3D` | ERC-5484 credential NFT |
-| CredentialRegistry | `0x7dC6eE61c094C794131fC4181e4B35Bcf1a63Dad` | Institution whitelist + issuance proxy |
-| CredentialVerifier | `0x9E8fd6776d72f9C71471AAbC98F6f0e2333f4928` | Stateless verification, batch support |
-| WorkerIdentity | `0x7C937A7E3C1c7C6D1776f69650Bfd1516103F766` | DID registry, 1 address : 1 identity |
-| ReputationScore | `0x263A2433a6D7CA34222120F21c2F68d0D1D1AA7a` | On-chain credit scoring engine |
-| LendingPool | `0x04DD8F6Ec0B13c689Ee479555910bc79B7496dCc` | ERC-4626 vault, reputation-backed loans |
-| LoanManager | `0x4B66Edc9e30711FFa273c84e5f1df46BE9103cc1` | Keeper, default processing |
-| CollateralOracle | `0xD35374e2621f16580eb093B9792773E34cAbA76a` | Score → credit limit conversion |
-| IssuerGovernance | `0xcBaB6c09fC25eF215a0eE00C5481E8d5195fee4a` | Council voting for institution approval |
-| DisputeResolver | `0x112BfE9b03AB35146463632b15e5fB220278418B` | Stake-gated dispute resolution |
+All contracts deployed and verified on [Snowtrace](https://testnet.snowtrace.io). **43/43 tests passing.**
+
+| Contract | Address |
+|---|---|
+| SoulboundCredential | [`0xdc7041742002F70ec635015b2e10FE52dD406A3D`](https://testnet.snowtrace.io/address/0xdc7041742002F70ec635015b2e10FE52dD406A3D) |
+| CredentialRegistry | [`0x7dC6eE61c094C794131fC4181e4B35Bcf1a63Dad`](https://testnet.snowtrace.io/address/0x7dC6eE61c094C794131fC4181e4B35Bcf1a63Dad) |
+| CredentialVerifier | [`0x9E8fd6776d72f9C71471AAbC98F6f0e2333f4928`](https://testnet.snowtrace.io/address/0x9E8fd6776d72f9C71471AAbC98F6f0e2333f4928) |
+| WorkerIdentity | [`0x7C937A7E3C1c7C6D1776f69650Bfd1516103F766`](https://testnet.snowtrace.io/address/0x7C937A7E3C1c7C6D1776f69650Bfd1516103F766) |
+| ReputationScore | [`0x263A2433a6D7CA34222120F21c2F68d0D1D1AA7a`](https://testnet.snowtrace.io/address/0x263A2433a6D7CA34222120F21c2F68d0D1D1AA7a) |
+| LendingPool | [`0x04DD8F6Ec0B13c689Ee479555910bc79B7496dCc`](https://testnet.snowtrace.io/address/0x04DD8F6Ec0B13c689Ee479555910bc79B7496dCc) |
+| LoanManager | [`0x4B66Edc9e30711FFa273c84e5f1df46BE9103cc1`](https://testnet.snowtrace.io/address/0x4B66Edc9e30711FFa273c84e5f1df46BE9103cc1) |
+| CollateralOracle | [`0xD35374e2621f16580eb093B9792773E34cAbA76a`](https://testnet.snowtrace.io/address/0xD35374e2621f16580eb093B9792773E34cAbA76a) |
+| IssuerGovernance | [`0xcBaB6c09fC25eF215a0eE00C5481E8d5195fee4a`](https://testnet.snowtrace.io/address/0xcBaB6c09fC25eF215a0eE00C5481E8d5195fee4a) |
+| DisputeResolver | [`0x112BfE9b03AB35146463632b15e5fB220278418B`](https://testnet.snowtrace.io/address/0x112BfE9b03AB35146463632b15e5fB220278418B) |
+| USDC (testnet) | [`0x5425890298aed601595a70AB815c96711a31Bc65`](https://testnet.snowtrace.io/address/0x5425890298aed601595a70AB815c96711a31Bc65) |
 
 ---
 
 ## Scoring Model
 
 Score range: 0–1000. Fully deterministic from on-chain state.
-
 ```
 Component           Max     How it's earned
 ─────────────────── ─────── ──────────────────────────────────────────
@@ -106,21 +106,16 @@ Identity age score  100 pts Time since DID registration
                             ≥2yr=100, ≥1yr=75, ≥6mo=50, new=25
 ```
 
-# Fix loan tiers table
-content = content.replace(
-    '''Tier    Score Range    Max Loan    APR    Duration
-──────  ───────────    ────────    ───    ────────
-0       250 – 499      500 USDC    12%    90 days
-1       500 – 749      2000 USDC   9%     180 days
-2       750 – 1000     5000 USDC   6%     365 days''',
-    '''Tier    Min Score    Max Loan    APR    Duration
-──────  ─────────    ────────    ───    ────────
-0       50 pts       5 USDC      12%    90 days
-1       500 pts      2000 USDC   9%     180 days
-2       750 pts      5000 USDC   6%     365 days'''
-)
-```
-(the above price for now)
+### Credit Tiers
+
+| Tier | Min Score | Max Borrow | APR | Duration |
+|---|---|---|---|---|
+| 0 | 50 pts | 5 USDC | 12% | 90 days |
+| 1 | 500 pts | 2,000 USDC | 9% | 180 days |
+| 2 | 750 pts | 5,000 USDC | 6% | 365 days |
+
+No collateral required at any tier.
+
 ---
 
 ## Design Decisions
@@ -138,44 +133,51 @@ LP tokens are composable. Liquidity providers get yield-bearing shares that can 
 Oracles introduce latency, cost, and a trust assumption. Everything VeraFlow needs to score a worker is already on-chain: credentials in `SoulboundCredential`, loan history in `LendingPool`, registration timestamp in `WorkerIdentity`. The score is recomputable by anyone at any time and produces the same result.
 
 **Why a council multisig for governance instead of token voting?**
-Token voting is plutocratic — whoever buys the most tokens controls which institutions get approved. Institution approval requires domain expertise (is this university accredited?), not capital. Council seats are held by subject matter experts. Token voting can be added later for protocol parameter changes.
+Token voting is plutocratic — whoever buys the most tokens controls which institutions get approved. Institution approval requires domain expertise (is this university accredited?), not capital. Council seats are held by subject matter experts.
 
 ---
 
 ## Repo Structure
+```
+contracts/
+├── src/
+│   ├── core/
+│   │   ├── SoulboundCredential.sol
+│   │   ├── CredentialRegistry.sol
+│   │   └── CredentialVerifier.sol
+│   ├── identity/
+│   │   ├── WorkerIdentity.sol
+│   │   └── ReputationScore.sol
+│   ├── lending/
+│   │   ├── LendingPool.sol
+│   │   ├── LoanManager.sol
+│   │   └── CollateralOracle.sol
+│   ├── governance/
+│   │   ├── IssuerGovernance.sol
+│   │   └── DisputeResolver.sol
+│   └── interfaces/
+│       ├── ICredential.sol
+│       ├── IWorkerIdentity.sol
+│       └── ILendingPool.sol
+├── test/
+│   └── VeraFlow.t.sol    # 43 tests, 0 failures
+└── script/
+    └── Deploy.s.sol
+```
 
+---
+
+## Running Tests
+```bash
+forge install
+forge test
+forge test -vvv    # verbose output per test
+forge coverage     # coverage report
 ```
-veraflow/
-├── contracts/
-│   ├── src/
-│   │   ├── core/
-│   │   │   ├── SoulboundCredential.sol
-│   │   │   ├── CredentialRegistry.sol
-│   │   │   └── CredentialVerifier.sol
-│   │   ├── identity/
-│   │   │   ├── WorkerIdentity.sol
-│   │   │   └── ReputationScore.sol
-│   │   ├── lending/
-│   │   │   ├── LendingPool.sol
-│   │   │   ├── LoanManager.sol
-│   │   │   └── CollateralOracle.sol
-│   │   ├── governance/
-│   │   │   ├── IssuerGovernance.sol
-│   │   │   └── DisputeResolver.sol
-│   │   └── interfaces/
-│   │       ├── ICredential.sol
-│   │       ├── IWorkerIdentity.sol
-│   │       └── ILendingPool.sol
-│   ├── test/
-│   │   └── VeraFlow.t.sol          # 43 tests, 0 failures
-│   └── script/
-│       └── Deploy.s.sol
-├── backend/                         # WIP
-└── frontend/                        # WIP
-```
+
+---
 
 ## Test Coverage
-
 ```
 43 tests across the full protocol lifecycle:
 
@@ -203,5 +205,10 @@ Governance       ProposalCreation, QuorumPassesProposal, ExecuteProposal,
 Disputes         RaiseDispute, MinimumStake, UpheldDispute,
                  DismissedReturnsStake
 
-Integration      FullProtocolLifecycle (register → credential → score → borrow → repay)
+Integration      FullProtocolLifecycle
+                 (register → credential → score → borrow → repay)
 ```
+
+---
+
+*Built by Emmanuel · Build Games 2026 · Avalanche Fuji*
