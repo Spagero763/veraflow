@@ -4,8 +4,6 @@ On-chain professional identity and credit layer for skilled workers.
 
 Workers get tamper-proof credentials as soulbound tokens. Those credentials feed a deterministic reputation score. That score unlocks micro-loans — no bank account, no collateral, no KYC middleman.
 
-Built on Avalanche Fuji for Build Games 2026.
-
 ---
 
 ## The Problem
@@ -210,5 +208,3 @@ Integration      FullProtocolLifecycle
 ```
 
 ---
-
-*Built by Emmanuel · Build Games 2026 · Avalanche Fuji*
